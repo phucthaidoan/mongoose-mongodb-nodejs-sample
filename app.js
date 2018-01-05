@@ -10,13 +10,40 @@ mongoose.connect('mongodb://localhost:27017/sampledb', (error) => {
 const authorSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {
-        firstName: String,
+        firstName: {
+            type: String,
+            required: true
+        },
         lastname: String
     },
     biography: String,
-    twitter: String,
-    facebook: String,
-    linkedin: String,
+    twitter: {
+        type: String,
+        validate: {
+            validator: function(text) {
+                return text.indexOf('https://twitter.com/') === 0;
+            },
+            message: 'Twitter handle must start with https://twitter.com/'
+        }
+    },
+    facebook: {
+        type: String,
+        validate: {
+            validator: function(text) {
+                return text.indexOf('https://www.facebook.com/') === 0;
+            },
+            message: 'Twitter handle must start with https://www.facebook.com/'
+        }
+    },
+    linkedin: {
+        type: String,
+        validate: {
+            validator: function(text) {
+                return text.indexOf('https://www.linkedin.com/') === 0;
+            },
+            message: 'Twitter handle must start with https://www.linkedin.com/'
+        }
+    },
     profilePicture: Buffer,
     created: {
         type: Date,
@@ -87,4 +114,22 @@ headAuthor.save(err => {
         }
         console.log('Book successfully saved.');
     })
+});
+
+// Validating Data Before Saving
+const invalidAuthor = new Author({
+    _id: new mongoose.Types.ObjectId(),
+    name: {        
+        lastName: 'First'
+    },
+    biography: 'Head First ebooks serires',
+    twitter:  'https://notwitter.com/headfirst',
+    facebook: 'https://www.nofacebook.com/headFirst/'
+});
+
+invalidAuthor.save(err => {
+    if(err) {
+        throw err;
+    }    
+    console.log('Author successfully saved - invalidAuthor.');
 });
