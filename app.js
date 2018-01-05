@@ -50,3 +50,41 @@ const bookSchema = mongoose.Schema({
         default: Date.now
     }
 });
+
+const Author = mongoose.model('Author', authorSchema);
+const Book = mongoose.model('Book', bookSchema);
+
+const headAuthor = new Author({
+    _id: new mongoose.Types.ObjectId(),
+    name: {
+        firstName: 'Head',
+        lastName: 'First'
+    },
+    biography: 'Head First ebooks serires',
+    twitter:  'https://twitter.com/headfirst',
+    facebook: 'https://www.facebook.com/headFirst/'
+});
+
+headAuthor.save(err => {
+    if(err) {
+        throw err;
+    }
+
+    console.log('Author successfully saved.');
+
+    const headFirstJava = new Book({
+        _id: new mongoose.Types.ObjectId(),
+        title: 'Head First Java',
+        author: headAuthor._id,
+        ratings:[{
+            summary: 'Great read'
+        }        ]
+    });
+
+    headFirstJava.save(err => {
+        if(err) {
+            throw err;
+        }
+        console.log('Book successfully saved.');
+    })
+});
