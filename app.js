@@ -81,7 +81,10 @@ const bookSchema = mongoose.Schema({
 const Author = mongoose.model('Author', authorSchema);
 const Book = mongoose.model('Book', bookSchema);
 
-const headAuthor = new Author({
+// ===========================================
+// sample: creating and saving Mongoose models
+// ===========================================
+/*const headAuthor = new Author({
     _id: new mongoose.Types.ObjectId(),
     name: {
         firstName: 'Head',
@@ -114,10 +117,12 @@ headAuthor.save(err => {
         }
         console.log('Book successfully saved.');
     })
-});
+});*/
 
-// Validating Data Before Saving
-const invalidAuthor = new Author({
+// ===========================================
+// sample: Validating Data Before Saving
+// ===========================================
+/*const invalidAuthor = new Author({
     _id: new mongoose.Types.ObjectId(),
     name: {        
         lastName: 'First'
@@ -132,4 +137,47 @@ invalidAuthor.save(err => {
         throw err;
     }    
     console.log('Author successfully saved - invalidAuthor.');
-});
+});*/
+
+// ===========================================
+// sample: searching for and updating data
+// ===========================================
+/*Author.findById('5a4f5a5ddc57464a384e1248', (err, author) => {
+    if(err) {
+        throw err;
+    }
+
+    author.biography = `Author's biography content11.`;
+    author.save(author, (err) => {
+        console.log('Author updated successfully');
+    });
+
+    console.log('AUTHORS: ', author);
+});*/
+
+Author.findByIdAndUpdate(
+    '5a4f5a5ddc57464a384e1248', 
+    {name: {firstName: 'Author first name updated 6699'}},
+    {new: true},
+    (err, author) => {
+        if(err) {
+            throw err;
+        }
+        console.log('Author is updated: ', author);
+    });
+
+
+/*
+Book
+    .find({
+        title: /Head/i
+    })
+    .sort('-created')
+    .limit(10)
+    .exec((err, books) => {
+        if(err) {
+            throw err;
+        }
+
+        console.log('BOOKS: ', books);
+    });*/
