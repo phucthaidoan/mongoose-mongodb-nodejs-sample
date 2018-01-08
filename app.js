@@ -155,7 +155,24 @@ invalidAuthor.save(err => {
     console.log('AUTHORS: ', author);
 });*/
 
-Author.findByIdAndUpdate(
+// searching for with projection
+Author.findById(
+    '5a4f5a5ddc57464a384e1248', 
+    {'_id': true, 'name.firstName': true}, 
+    (err, author) => {
+    if(err) {
+        throw err;
+    }
+
+    author.biography = `Author's biography content11.`;
+    author.save(author, (err) => {
+        console.log('Author updated successfully');
+    });
+
+    console.log('AUTHORS: ', author);
+});
+
+/*Author.findByIdAndUpdate(
     '5a4f5a5ddc57464a384e1248', 
     {name: {firstName: 'Author first name updated 6699'}},
     {new: true},
@@ -164,7 +181,7 @@ Author.findByIdAndUpdate(
             throw err;
         }
         console.log('Author is updated: ', author);
-    });
+    });*/
 
 
 /*
